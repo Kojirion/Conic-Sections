@@ -24,7 +24,7 @@ void Plane::draw() const
 {
     glBegin(GL_QUADS);
 
-    glColor3f(255,0,0);
+    glColor4f(255,0,0, 125);
 
     glVertex3f(A.x, A.y, A.z);
     glVertex3f(B.x, B.y, B.z);

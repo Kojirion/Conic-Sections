@@ -33,6 +33,8 @@ private:
     Cone cone;
     Plane plane;
 
+    void trigger(const std::string& which);
+
 };
 
 #endif // APPLICATION_HPP

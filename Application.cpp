@@ -1,7 +1,7 @@
 #include "Application.hpp"
 
 Application::Application():
-    window(sf::VideoMode(800, 600), "Conic sections", sf::Style::Default, sf::ContextSettings(32)),
+    window(sf::VideoMode(1366, 768), "Conic sections", sf::Style::Default, sf::ContextSettings(32)),
     camera{{0,0,200.}, {0,0,0}, {0,1,0}}
 {
     actions["close"] = thor::Action(sf::Event::Closed);
@@ -9,6 +9,7 @@ Application::Application():
     actions["strafeLeft" ] = thor::Action(sf::Keyboard::Left );
     actions["strafeUp"   ] = thor::Action(sf::Keyboard::Up   );
     actions["strafeDown" ] = thor::Action(sf::Keyboard::Down );
+    actions["resized"    ] = thor::Action(sf::Event::Resized );
 
     //window.resetGLStates();
     window.setFramerateLimit(60);
@@ -26,18 +27,32 @@ Application::Application():
 
 void Application::run()
 {
-    const float width = 200.f;
-    const float height = 200.f;
+    const float width = 600.f;
+    const float height = 600.f;
+
+    sfg::Table::Ptr layout(sfg::Table::Create());
+    layout->SetColumnSpacings(5.f);
 
     sfg::Canvas::Ptr canvas = sfg::Canvas::Create(true);
     canvas->SetRequisition({width, height});
-    sfg::Window::Ptr canvasWindow(sfg::Window::Create());
-    canvasWindow->Add(canvas);
+    layout->Attach(canvas, {0,0,1,10});
+
+    sfg::Button::Ptr button(sfg::Button::Create("Strafe Right"));
+    button->GetSignal(sfg::Button::OnLeftClick).Connect(
+                std::bind(&Application::trigger, this, "strafeRight"));
+    layout->Attach(button, {1,0,1,1});
+
+    sfg::Window::Ptr canvasWindow(sfg::Window::Create(sfg::Window::BACKGROUND));
+    canvasWindow->SetRequisition(static_cast<sf::Vector2f>(window.getSize()));
+    canvasWindow->Add(layout);
     desktop.Add(canvasWindow);
 
+//    system.connect("resized", [this, &canvasWindow](thor::ActionContext<std::string>){
+//        canvasWindow->SetAllocation({canvasWindow->GetAbsolutePosition(),
+//                                      static_cast<sf::Vector2f>(window.getSize())});
+//    });
+
     sf::Clock clock;
-
-
 
     canvas->Bind();
     glEnable (GL_DEPTH_TEST);
@@ -46,11 +61,6 @@ void Application::run()
     glLoadIdentity();
     gluPerspective(120, width / height, .1, 500);
     canvas->Unbind();
-
-    canvas->GetSignal(sfg::Canvas::OnSizeAllocate).Connect([&canvas](){
-
-    });
-
 
     while (window.isOpen()){
         actions.clearEvents();
@@ -97,4 +107,9 @@ void Application::run()
 
     }
 
+}
+
+void Application::trigger(const std::string &which)
+{
+    system.triggerEvent(thor::ActionContext<std::string>(&window, nullptr, which));
 }
