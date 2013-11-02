@@ -19,12 +19,16 @@ void Conic::update(const Cone &cone, const Plane &plane)
 
 void Conic::draw() const
 {
+    glPointSize(6.f);
+
     glBegin(GL_POINTS);
 
-    glColor3f(255, 102, 0);
+    glColor3f(204, 102, 0);
 
     for (const auto& point : points)
         glVertex3f(point.x, point.y, point.z);
 
     glEnd();
+
+    glPointSize(1.f);
 }

@@ -35,7 +35,7 @@ Application::Application():
     system.connect("PanUp"   , [this](ActionContext){ camera.lookAt.y += 10.f; });
     system.connect("PanDown" , [this](ActionContext){ camera.lookAt.y -= 10.f; });
 
-    system.connect("TiltDown", [this](ActionContext){ transform = glm::rotate(transform, 5.f, glm::vec3(1.f,0,0)); });
+    system.connect("TiltDown", [this](ActionContext){ transform = glm::rotate(transform, -1.f, glm::vec3(1.f,0,0)); });
     system.connect("PullUp"  , [this](ActionContext){ transform = glm::translate(transform, glm::vec3(0, 1.f, 0)); });
 //    system.connect("PanUp"   , [this](ActionContext){ camera.lookAt.y += 10.f; });
 //    system.connect("PanDown" , [this](ActionContext){ camera.lookAt.y -= 10.f; });
@@ -113,7 +113,7 @@ void Application::run()
 
         //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        //cone.draw();
+        cone.draw();
         plane.draw();
         conic.draw();
 
