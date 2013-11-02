@@ -1,6 +1,6 @@
 project(ConicSections)
 cmake_minimum_required(VERSION 2.8)
-find_package(SFML 2 REQUIRED window system)
+find_package(SFML 2 REQUIRED graphics window system)
 find_package(Thor 2 REQUIRED)
 find_package(OpenGL REQUIRED)
 find_package(SFGUI REQUIRED)

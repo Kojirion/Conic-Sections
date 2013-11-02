@@ -22,9 +22,6 @@ public:
     void run();
 
 private:
-    static const int width = 800;
-    static const int height = 600;
-
     sfg::SFGUI sfgui_;
     sf::Window window;
     sfg::Desktop desktop;
