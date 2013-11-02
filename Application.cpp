@@ -91,6 +91,36 @@ void Application::run()
     });
     layout->Attach(translateZSpinButton, {1,3,1,1});
 
+    sfg::SpinButton::Ptr rotateXSpinButton(sfg::SpinButton::Create(-300.f, 300.f, 1.f));
+    rotateXSpinButton->GetSignal(sfg::SpinButton::OnValueChanged).Connect([this, &rotateXSpinButton, speed](){
+        int sign;
+        if (rotateXSpinButton->IsIncreaseStepperPressed()) sign = 1;
+        else sign = -1;
+
+        transform = glm::rotate(transform, static_cast<float>(sign), glm::vec3(1.f,0,0));
+    });
+    layout->Attach(rotateXSpinButton, {1,4,1,1});
+
+    sfg::SpinButton::Ptr rotateYSpinButton(sfg::SpinButton::Create(-300.f, 300.f, 1.f));
+    rotateYSpinButton->GetSignal(sfg::SpinButton::OnValueChanged).Connect([this, &rotateYSpinButton, speed](){
+        int sign;
+        if (rotateYSpinButton->IsIncreaseStepperPressed()) sign = 1;
+        else sign = -1;
+
+        transform = glm::rotate(transform, static_cast<float>(sign), glm::vec3(0, 1.f, 0));
+    });
+    layout->Attach(rotateYSpinButton, {1,5,1,1});
+
+    sfg::SpinButton::Ptr rotateZSpinButton(sfg::SpinButton::Create(-300.f, 300.f, 1.f));
+    rotateZSpinButton->GetSignal(sfg::SpinButton::OnValueChanged).Connect([this, &rotateZSpinButton, speed](){
+        int sign;
+        if (rotateZSpinButton->IsIncreaseStepperPressed()) sign = 1;
+        else sign = -1;
+
+        transform = glm::rotate(transform, static_cast<float>(sign), glm::vec3(0, 0, 1.f));
+    });
+    layout->Attach(rotateZSpinButton, {1,6,1,1});
+
     sfg::Window::Ptr canvasWindow(sfg::Window::Create(sfg::Window::BACKGROUND));
     canvasWindow->SetRequisition(static_cast<sf::Vector2f>(window.getSize()));
     canvasWindow->Add(layout);
