@@ -2,6 +2,8 @@
 
 Cylinder::Cylinder()
 {
+    name = "Cylinder";
+
     float h = 240.f;
     float r = 200.f;
 

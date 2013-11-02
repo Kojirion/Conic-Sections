@@ -2,6 +2,8 @@
 
 Paraboloid::Paraboloid()
 {
+    name = "Paraboloid";
+
     float h = 240.f;
     float r = 200.f;
 

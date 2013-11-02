@@ -5,10 +5,15 @@
 #include <Thor/Input/ActionMap.hpp>
 #include <Thor/Input/EventSystem.hpp>
 #include <SFGUI/SFGUI.hpp>
-#include "Cone.hpp"
-#include "Cylinder.hpp"
 #include "Conic.hpp"
-#include "Paraboloid.hpp"
+#include "PlaneControls.hpp"
+#include <memory>
+
+class Surface;
+
+typedef thor::ActionMap<std::string> ActionMap;
+typedef ActionMap::CallbackSystem CallbackSystem;
+typedef thor::ActionContext<std::string> ActionContext;
 
 struct Camera{
     sf::Vector3f eye;
@@ -28,14 +33,15 @@ private:
     sf::Window window;
     sfg::Desktop desktop;
     //sf::Image icon;
-    thor::ActionMap<std::string> actions;
-    thor::ActionMap<std::string>::CallbackSystem system;
+    ActionMap actions;
+    CallbackSystem system;
     Camera camera;
 
-    Cone cone;
-    Cylinder cylinder;
-    Paraboloid paraboloid;
     Plane plane;
+    PlaneControls planeControls;
+
+    Surface* surface;
+    std::vector<std::unique_ptr<Surface> > surfaces;
 
     Conic conic;
 

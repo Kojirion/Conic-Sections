@@ -1,10 +1,19 @@
 #include "Application.hpp"
 #include <glm/gtc/matrix_transform.hpp>
+#include "Cone.hpp"
+#include "Cylinder.hpp"
+#include "Paraboloid.hpp"
 
 Application::Application():
-    window(sf::VideoMode(1366, 768), "Conic sections", sf::Style::Close, sf::ContextSettings(32)),
+    window(sf::VideoMode(1366, 768), "Snowstorm", sf::Style::Close, sf::ContextSettings(32)),
     camera{{0,0,350.}, {0,0,0}, {0,1,0}}
 {
+    surfaces.emplace_back(new Cone);
+    surfaces.emplace_back(new Cylinder);
+    surfaces.emplace_back(new Paraboloid);
+
+    surface = surfaces[0].get();
+
     actions["Close"] = thor::Action(sf::Event::Closed);
     actions["StrafeRight"] = thor::Action(sf::Keyboard::Right);
     actions["StrafeLeft" ] = thor::Action(sf::Keyboard::Left );
@@ -21,9 +30,7 @@ Application::Application():
     //window.resetGLStates();
     window.setFramerateLimit(60);
 
-    system.connect("Close", std::bind(&sf::Window::close, &window));
-
-    typedef thor::ActionContext<std::string> ActionContext;
+    system.connect("Close", std::bind(&sf::Window::close, &window));    
 
     system.connect("StrafeRight", [this](ActionContext){ camera.eye.x += 10.f; });
     system.connect("StrafeLeft" , [this](ActionContext){ camera.eye.x -= 10.f; });
@@ -56,89 +63,8 @@ void Application::run()
     canvas->SetRequisition({width, height});
     layout->Attach(canvas, {0,0,1,10});
 
-    auto planeLayout = sfg::Box::Create(sfg::Box::Orientation::HORIZONTAL, 5.f);
-    auto planeTranslateLayout = sfg::Box::Create(sfg::Box::Orientation::VERTICAL);
-    auto planeRotateLayout = sfg::Box::Create(sfg::Box::Orientation::VERTICAL);
 
-
-    sfg::Button::Ptr resetButton(sfg::Button::Create("Reset"));
-    resetButton->GetSignal(sfg::Button::OnLeftClick).Connect(
-                std::bind(&Application::trigger, this, "Reset"));
-    planeLayout->Pack(resetButton);
-
-    float speed = 5.f;
-
-    sfg::SpinButton::Ptr translateXSpinButton(sfg::SpinButton::Create(-300.f, 300.f, 1.f));
-    translateXSpinButton->GetSignal(sfg::SpinButton::OnValueChanged).Connect([this, &translateXSpinButton, speed](){
-        int sign;
-        if (translateXSpinButton->IsIncreaseStepperPressed()) sign = 1;
-        else sign = -1;
-
-        transform = glm::translate(transform, glm::vec3(0, sign * speed, 0));
-    });
-    planeTranslateLayout->Pack(translateXSpinButton);
-
-    sfg::SpinButton::Ptr translateYSpinButton(sfg::SpinButton::Create(-300.f, 300.f, 1.f));
-    translateYSpinButton->GetSignal(sfg::SpinButton::OnValueChanged).Connect([this, &translateYSpinButton, speed](){
-        int sign;
-        if (translateYSpinButton->IsIncreaseStepperPressed()) sign = 1;
-        else sign = -1;
-
-        transform = glm::translate(transform, glm::vec3(sign * speed, 0, 0));
-    });
-    planeTranslateLayout->Pack(translateYSpinButton);
-
-    sfg::SpinButton::Ptr translateZSpinButton(sfg::SpinButton::Create(-300.f, 300.f, 1.f));
-    translateZSpinButton->GetSignal(sfg::SpinButton::OnValueChanged).Connect([this, &translateZSpinButton, speed](){
-        int sign;
-        if (translateZSpinButton->IsIncreaseStepperPressed()) sign = 1;
-        else sign = -1;
-
-        transform = glm::translate(transform, glm::vec3(0, 0, sign * speed));
-    });
-    planeTranslateLayout->Pack(translateZSpinButton);
-
-    auto planeTranslateFrame = sfg::Frame::Create("Translate");
-    planeTranslateFrame->Add(planeTranslateLayout);
-    planeLayout->Pack(planeTranslateFrame);
-
-    sfg::SpinButton::Ptr rotateXSpinButton(sfg::SpinButton::Create(-300.f, 300.f, 1.f));
-    rotateXSpinButton->GetSignal(sfg::SpinButton::OnValueChanged).Connect([this, &rotateXSpinButton, speed](){
-        int sign;
-        if (rotateXSpinButton->IsIncreaseStepperPressed()) sign = 1;
-        else sign = -1;
-
-        transform = glm::rotate(transform, static_cast<float>(sign), glm::vec3(1.f,0,0));
-    });
-    planeRotateLayout->Pack(rotateXSpinButton);
-
-    sfg::SpinButton::Ptr rotateYSpinButton(sfg::SpinButton::Create(-300.f, 300.f, 1.f));
-    rotateYSpinButton->GetSignal(sfg::SpinButton::OnValueChanged).Connect([this, &rotateYSpinButton, speed](){
-        int sign;
-        if (rotateYSpinButton->IsIncreaseStepperPressed()) sign = 1;
-        else sign = -1;
-
-        transform = glm::rotate(transform, static_cast<float>(sign), glm::vec3(0, 1.f, 0));
-    });
-    planeRotateLayout->Pack(rotateYSpinButton);
-
-    sfg::SpinButton::Ptr rotateZSpinButton(sfg::SpinButton::Create(-300.f, 300.f, 1.f));
-    rotateZSpinButton->GetSignal(sfg::SpinButton::OnValueChanged).Connect([this, &rotateZSpinButton, speed](){
-        int sign;
-        if (rotateZSpinButton->IsIncreaseStepperPressed()) sign = 1;
-        else sign = -1;
-
-        transform = glm::rotate(transform, static_cast<float>(sign), glm::vec3(0, 0, 1.f));
-    });
-    planeRotateLayout->Pack(rotateZSpinButton);
-
-    auto planeRotateFrame = sfg::Frame::Create("Rotate");
-    planeRotateFrame->Add(planeRotateLayout);
-    planeLayout->Pack(planeRotateFrame);
-
-    auto planeFrame = sfg::Frame::Create("Plane");
-    planeFrame->Add(planeLayout);
-    layout->Attach(planeFrame, {1,0,1,1});
+    layout->Attach(planeControls.getWidget(), {1,0,1,1});
 
     sfg::Window::Ptr canvasWindow(sfg::Window::Create(sfg::Window::BACKGROUND));
     canvasWindow->SetRequisition(static_cast<sf::Vector2f>(window.getSize()));
@@ -183,8 +109,8 @@ void Application::run()
         //update here
         desktop.Update(1.f);
 
-        plane.update(transform);
-        conic.update(paraboloid, plane);
+        plane.update(planeControls.getTransform());
+        conic.update(*surface, plane);
 
         canvas->Bind();
 
@@ -202,7 +128,7 @@ void Application::run()
 
         //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        paraboloid.draw();
+        surface->draw();
         plane.draw();
         conic.draw();
 

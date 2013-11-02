@@ -2,6 +2,7 @@
 #define SURFACE_HPP
 #include <vector>
 #include <glm/glm.hpp>
+#include <string>
 
 class Surface
 {
@@ -14,6 +15,8 @@ public:
     iterator end() const;
 
     void draw() const;
+
+    std::string name;
 
 protected:
     std::vector<glm::vec3> points;

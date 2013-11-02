@@ -5,7 +5,7 @@
 class Cone : public Surface
 {
 public:
-    Cone();
+    Cone();    
 };
 
 #endif // CONE_HPP

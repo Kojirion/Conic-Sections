@@ -3,6 +3,8 @@
 
 Cone::Cone()
 {
+    name = "Cone";
+
     float h = 240.f;
     float r = 200.f;
 
