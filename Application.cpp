@@ -59,6 +59,38 @@ void Application::run()
                 std::bind(&Application::trigger, this, "StrafeRight"));
     layout->Attach(button, {1,0,1,1});
 
+    float speed = 5.f;
+
+    sfg::SpinButton::Ptr translateXSpinButton(sfg::SpinButton::Create(-300.f, 300.f, 1.f));
+    translateXSpinButton->GetSignal(sfg::SpinButton::OnValueChanged).Connect([this, &translateXSpinButton, speed](){
+        int sign;
+        if (translateXSpinButton->IsIncreaseStepperPressed()) sign = 1;
+        else sign = -1;
+
+        transform = glm::translate(transform, glm::vec3(0, sign * speed, 0));
+    });
+    layout->Attach(translateXSpinButton, {1,1,1,1});
+
+    sfg::SpinButton::Ptr translateYSpinButton(sfg::SpinButton::Create(-300.f, 300.f, 1.f));
+    translateYSpinButton->GetSignal(sfg::SpinButton::OnValueChanged).Connect([this, &translateYSpinButton, speed](){
+        int sign;
+        if (translateYSpinButton->IsIncreaseStepperPressed()) sign = 1;
+        else sign = -1;
+
+        transform = glm::translate(transform, glm::vec3(sign * speed, 0, 0));
+    });
+    layout->Attach(translateYSpinButton, {1,2,1,1});
+
+    sfg::SpinButton::Ptr translateZSpinButton(sfg::SpinButton::Create(-300.f, 300.f, 1.f));
+    translateZSpinButton->GetSignal(sfg::SpinButton::OnValueChanged).Connect([this, &translateZSpinButton, speed](){
+        int sign;
+        if (translateZSpinButton->IsIncreaseStepperPressed()) sign = 1;
+        else sign = -1;
+
+        transform = glm::translate(transform, glm::vec3(0, 0, sign * speed));
+    });
+    layout->Attach(translateZSpinButton, {1,3,1,1});
+
     sfg::Window::Ptr canvasWindow(sfg::Window::Create(sfg::Window::BACKGROUND));
     canvasWindow->SetRequisition(static_cast<sf::Vector2f>(window.getSize()));
     canvasWindow->Add(layout);
@@ -100,7 +132,7 @@ void Application::run()
         actions.invokeCallbacks(system, &window);
 
         //update here
-        desktop.Update(clock.restart().asSeconds());
+        desktop.Update(1.f);
 
         plane.update(transform);
         conic.update(cone, plane);
