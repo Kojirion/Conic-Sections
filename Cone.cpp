@@ -1,6 +1,5 @@
 #include "Cone.hpp"
 #include <cmath>
-#include <SFML/OpenGL.hpp>
 
 Cone::Cone()
 {
@@ -19,26 +18,4 @@ Cone::Cone()
         }
     }
 
-}
-
-Cone::iterator Cone::begin() const
-{
-    return points.begin();
-}
-
-Cone::iterator Cone::end() const
-{
-    return points.end();
-}
-
-void Cone::draw() const
-{
-    glBegin(GL_POINTS);
-
-    glColor3f(0,255,0);
-
-    for (const auto& point : points)
-        glVertex3f(point.x, point.y, point.z);
-
-    glEnd();
 }
