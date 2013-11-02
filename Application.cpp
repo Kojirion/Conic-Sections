@@ -1,4 +1,5 @@
 #include "Application.hpp"
+#include <glm/gtc/matrix_transform.hpp>
 
 Application::Application():
     window(sf::VideoMode(1366, 768), "Conic sections", sf::Style::Default, sf::ContextSettings(32)),
@@ -34,8 +35,8 @@ Application::Application():
     system.connect("PanUp"   , [this](ActionContext){ camera.lookAt.y += 10.f; });
     system.connect("PanDown" , [this](ActionContext){ camera.lookAt.y -= 10.f; });
 
-    system.connect("TiltDown", [this](ActionContext){ camera.lookAt.x += 10.f; });
-    system.connect("PullUp"  , [this](ActionContext){ camera.lookAt.x -= 10.f; });
+    system.connect("TiltDown", [this](ActionContext){ transform = glm::rotate(transform, 5.f, glm::vec3(1.f,0,0)); });
+    system.connect("PullUp"  , [this](ActionContext){ transform = glm::translate(transform, glm::vec3(0, 1.f, 0)); });
 //    system.connect("PanUp"   , [this](ActionContext){ camera.lookAt.y += 10.f; });
 //    system.connect("PanDown" , [this](ActionContext){ camera.lookAt.y -= 10.f; });
 
@@ -87,10 +88,13 @@ void Application::run()
             desktop.HandleEvent(event);
         }
 
+        transform = glm::mat4();
         actions.invokeCallbacks(system, &window);
 
         //update here
         desktop.Update(clock.restart().asSeconds());
+
+        plane.update(transform);
         conic.update(cone, plane);
 
         canvas->Bind();

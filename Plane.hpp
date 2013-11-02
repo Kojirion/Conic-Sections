@@ -9,7 +9,7 @@ public:
 
     bool contains(const glm::vec3 point) const;
 
-    //void update(const sf::Transform& matrix);
+    void update(const glm::mat4 &matrix);
 
     void draw() const;
 

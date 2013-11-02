@@ -16,13 +16,21 @@ Plane::Plane():
 
 bool Plane::contains(const glm::vec3 point) const
 {
-    return std::abs(glm::dot(point, cross) - Dee) < 10.f;
+    return std::abs(glm::dot(point, cross) - Dee) < 100000.f;
 }
 
-//void Plane::update(const sf::Transform &matrix)
-//{
+void Plane::update(const glm::mat4& matrix)
+{
+    A = glm::vec3(matrix * glm::vec4(A, 1.f));
+    B = glm::vec3(matrix * glm::vec4(B, 1.f));
+    C = glm::vec3(matrix * glm::vec4(C, 1.f));
+    D = glm::vec3(matrix * glm::vec4(D, 1.f));
 
-//}
+    AB = B-A;
+    AD = D-A;
+    cross = glm::cross(AB, AD);
+    Dee = glm::dot(cross, A);
+}
 
 void Plane::draw() const
 {

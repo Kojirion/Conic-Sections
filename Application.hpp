@@ -36,6 +36,8 @@ private:
 
     void trigger(const std::string& which);
 
+    glm::mat4 transform;
+
 };
 
 #endif // APPLICATION_HPP
