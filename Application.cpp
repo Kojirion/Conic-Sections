@@ -2,7 +2,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 Application::Application():
-    window(sf::VideoMode(1366, 768), "Conic sections", sf::Style::Default, sf::ContextSettings(32)),
+    window(sf::VideoMode(1366, 768), "Conic sections", sf::Style::Close, sf::ContextSettings(32)),
     camera{{0,0,200.}, {0,0,0}, {0,1,0}}
 {
     actions["Close"] = thor::Action(sf::Event::Closed);
@@ -64,18 +64,18 @@ void Application::run()
     canvasWindow->Add(layout);
     desktop.Add(canvasWindow);
 
-    system.connect("Resized", [this, &canvasWindow, &canvas](thor::ActionContext<std::string>){
-        canvasWindow->SetAllocation({canvasWindow->GetAbsolutePosition(),
-                                      static_cast<sf::Vector2f>(window.getSize())});
+//    system.connect("Resized", [this, &canvasWindow, &canvas](thor::ActionContext<std::string>){
+//        canvasWindow->SetAllocation({canvasWindow->GetAbsolutePosition(),
+//                                      static_cast<sf::Vector2f>(window.getSize())});
 
-        canvas->Bind();
-        auto size = canvas->GetRequisition();
-        glViewport(0, 0, size.x, size.y);
-        glMatrixMode(GL_PROJECTION);
-        glLoadIdentity();
-        gluPerspective(120, size.x / static_cast<float>(size.y), .1, 500);
-        canvas->Unbind();
-    });
+//        canvas->Bind();
+//        auto size = canvas->GetRequisition();
+//        glViewport(0, 0, size.x, size.y);
+//        glMatrixMode(GL_PROJECTION);
+//        glLoadIdentity();
+//        gluPerspective(120, size.x / static_cast<float>(size.y), .1, 500);
+//        canvas->Unbind();
+//    });
 
     sf::Clock clock;
 
