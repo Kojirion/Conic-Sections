@@ -64,10 +64,18 @@ void Application::run()
     canvasWindow->Add(layout);
     desktop.Add(canvasWindow);
 
-//    system.connect("Resized", [this, &canvasWindow](thor::ActionContext<std::string>){
-//        canvasWindow->SetAllocation({canvasWindow->GetAbsolutePosition(),
-//                                      static_cast<sf::Vector2f>(window.getSize())});
-//    });
+    system.connect("Resized", [this, &canvasWindow, &canvas](thor::ActionContext<std::string>){
+        canvasWindow->SetAllocation({canvasWindow->GetAbsolutePosition(),
+                                      static_cast<sf::Vector2f>(window.getSize())});
+
+        canvas->Bind();
+        auto size = canvas->GetRequisition();
+        glViewport(0, 0, size.x, size.y);
+        glMatrixMode(GL_PROJECTION);
+        glLoadIdentity();
+        gluPerspective(120, size.x / static_cast<float>(size.y), .1, 500);
+        canvas->Unbind();
+    });
 
     sf::Clock clock;
 
@@ -117,8 +125,8 @@ void Application::run()
         plane.draw();
         conic.draw();
 
-//        canvas->Display();
-//        canvas->Unbind();
+        canvas->Display();
+        canvas->Unbind();
 
         window.setActive(true);
         sfgui_.Display(window);
