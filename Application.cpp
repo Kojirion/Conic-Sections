@@ -4,24 +4,30 @@ Application::Application():
     window(sf::VideoMode(1366, 768), "Conic sections", sf::Style::Default, sf::ContextSettings(32)),
     camera{{0,0,200.}, {0,0,0}, {0,1,0}}
 {
-    actions["close"] = thor::Action(sf::Event::Closed);
-    actions["strafeRight"] = thor::Action(sf::Keyboard::Right);
-    actions["strafeLeft" ] = thor::Action(sf::Keyboard::Left );
-    actions["strafeUp"   ] = thor::Action(sf::Keyboard::Up   );
-    actions["strafeDown" ] = thor::Action(sf::Keyboard::Down );
-    actions["resized"    ] = thor::Action(sf::Event::Resized );
+    actions["Close"] = thor::Action(sf::Event::Closed);
+    //actions["StrafeRight"] = thor::Action(sf::Keyboard::Right);
+    actions["StrafeLeft" ] = thor::Action(sf::Keyboard::Left );
+    actions["StrafeUp"   ] = thor::Action(sf::Keyboard::Up   );
+    actions["StrafeDown" ] = thor::Action(sf::Keyboard::Down );
+    actions["Resized"    ] = thor::Action(sf::Event::Resized );
+    actions["PanRight"   ] = thor::Action(sf::Keyboard::Right) && thor::Action(sf::Keyboard::LControl);
 
     //window.resetGLStates();
     window.setFramerateLimit(60);
 
-    system.connect("close", std::bind(&sf::Window::close, &window));
+    system.connect("Close", std::bind(&sf::Window::close, &window));
 
     typedef thor::ActionContext<std::string> ActionContext;
 
-    system.connect("strafeRight", [this](ActionContext){ camera.eye.x += 10.f; });
-    system.connect("strafeLeft" , [this](ActionContext){ camera.eye.x -= 10.f; });
-    system.connect("strafeUp"   , [this](ActionContext){ camera.eye.y += 10.f; });
-    system.connect("strafeDown" , [this](ActionContext){ camera.eye.y -= 10.f; });
+    system.connect("StrafeRight", [this](ActionContext){ camera.eye.x += 10.f; });
+    system.connect("StrafeLeft" , [this](ActionContext){ camera.eye.x -= 10.f; });
+    system.connect("StrafeUp"   , [this](ActionContext){ camera.eye.y += 10.f; });
+    system.connect("StrafeDown" , [this](ActionContext){ camera.eye.y -= 10.f; });
+
+    system.connect("PanRight", [this](ActionContext){ camera.lookAt.x += 10.f; });
+    system.connect("PanLeft" , [this](ActionContext){ camera.lookAt.x -= 10.f; });
+    system.connect("PanUp"   , [this](ActionContext){ camera.lookAt.y += 10.f; });
+    system.connect("PanDown" , [this](ActionContext){ camera.lookAt.y -= 10.f; });
 
 }
 
@@ -39,7 +45,7 @@ void Application::run()
 
     sfg::Button::Ptr button(sfg::Button::Create("Strafe Right"));
     button->GetSignal(sfg::Button::OnLeftClick).Connect(
-                std::bind(&Application::trigger, this, "strafeRight"));
+                std::bind(&Application::trigger, this, "StrafeRight"));
     layout->Attach(button, {1,0,1,1});
 
     sfg::Window::Ptr canvasWindow(sfg::Window::Create(sfg::Window::BACKGROUND));
@@ -47,7 +53,7 @@ void Application::run()
     canvasWindow->Add(layout);
     desktop.Add(canvasWindow);
 
-//    system.connect("resized", [this, &canvasWindow](thor::ActionContext<std::string>){
+//    system.connect("Resized", [this, &canvasWindow](thor::ActionContext<std::string>){
 //        canvasWindow->SetAllocation({canvasWindow->GetAbsolutePosition(),
 //                                      static_cast<sf::Vector2f>(window.getSize())});
 //    });
@@ -75,6 +81,7 @@ void Application::run()
 
         //update here
         desktop.Update(clock.restart().asSeconds());
+        conic.update(cone, plane);
 
         canvas->Bind();
 
@@ -92,8 +99,9 @@ void Application::run()
 
         //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        cone.draw();
+        //cone.draw();
         plane.draw();
+        conic.draw();
 
 //        canvas->Display();
 //        canvas->Unbind();

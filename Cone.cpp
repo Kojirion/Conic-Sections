@@ -19,6 +19,16 @@ Cone::Cone()
 
 }
 
+Cone::iterator Cone::begin() const
+{
+    return points.begin();
+}
+
+Cone::iterator Cone::end() const
+{
+    return points.end();
+}
+
 void Cone::draw() const
 {
     glBegin(GL_POINTS);

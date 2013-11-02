@@ -1,6 +1,7 @@
 #include "Plane.hpp"
 #include <Thor/Vectors/VectorAlgebra3D.hpp>
 #include <SFML/OpenGL.hpp>
+#include <limits>
 
 Plane::Plane():
     A(-240,  240, 0),
@@ -17,14 +18,14 @@ Plane::Plane():
 
 bool Plane::contains(const sf::Vector3f point) const
 {
-    return thor::dotProduct(point, cross) == Dee; //but both floats...
+    return std::abs(thor::dotProduct(point, cross) - Dee) < 10.f;
 }
 
 void Plane::draw() const
 {
-    glBegin(GL_QUADS);
+    glBegin(GL_LINE_LOOP);
 
-    glColor4f(255,0,0, 125);
+    glColor3f(255,0,0);
 
     glVertex3f(A.x, A.y, A.z);
     glVertex3f(B.x, B.y, B.z);

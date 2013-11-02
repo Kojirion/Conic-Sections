@@ -11,7 +11,10 @@ public:
 
     void update(const Cone& cone, const Plane& plane);
 
+    void draw() const;
+
 private:
+    std::vector<sf::Vector3f> points;
 };
 
 #endif // CONIC_HPP

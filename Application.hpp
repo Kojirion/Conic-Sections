@@ -32,6 +32,7 @@ private:
 
     Cone cone;
     Plane plane;
+    Conic conic;
 
     void trigger(const std::string& which);
 

@@ -8,6 +8,11 @@ class Cone
 public:
     Cone();
 
+    typedef std::vector<sf::Vector3f>::const_iterator iterator;
+
+    iterator begin() const;
+    iterator end() const;
+
     void draw() const;
 
 private:
