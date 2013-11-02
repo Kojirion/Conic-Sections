@@ -37,6 +37,8 @@ Application::Application():
 
     system.connect("TiltDown", [this](ActionContext){ transform = glm::rotate(transform, -1.f, glm::vec3(1.f,0,0)); });
     system.connect("PullUp"  , [this](ActionContext){ transform = glm::translate(transform, glm::vec3(0, 1.f, 0)); });
+
+    system.connect("Reset"   , [this](ActionContext){ plane = Plane(); });
 //    system.connect("PanUp"   , [this](ActionContext){ camera.lookAt.y += 10.f; });
 //    system.connect("PanDown" , [this](ActionContext){ camera.lookAt.y -= 10.f; });
 
@@ -54,10 +56,15 @@ void Application::run()
     canvas->SetRequisition({width, height});
     layout->Attach(canvas, {0,0,1,10});
 
-    sfg::Button::Ptr button(sfg::Button::Create("Strafe Right"));
-    button->GetSignal(sfg::Button::OnLeftClick).Connect(
-                std::bind(&Application::trigger, this, "StrafeRight"));
-    layout->Attach(button, {1,0,1,1});
+    auto planeLayout = sfg::Box::Create(sfg::Box::Orientation::HORIZONTAL, 5.f);
+    auto planeTranslateLayout = sfg::Box::Create(sfg::Box::Orientation::VERTICAL);
+    auto planeRotateLayout = sfg::Box::Create(sfg::Box::Orientation::VERTICAL);
+
+
+    sfg::Button::Ptr resetButton(sfg::Button::Create("Reset"));
+    resetButton->GetSignal(sfg::Button::OnLeftClick).Connect(
+                std::bind(&Application::trigger, this, "Reset"));
+    planeLayout->Pack(resetButton);
 
     float speed = 5.f;
 
@@ -69,7 +76,7 @@ void Application::run()
 
         transform = glm::translate(transform, glm::vec3(0, sign * speed, 0));
     });
-    layout->Attach(translateXSpinButton, {1,1,1,1});
+    planeTranslateLayout->Pack(translateXSpinButton);
 
     sfg::SpinButton::Ptr translateYSpinButton(sfg::SpinButton::Create(-300.f, 300.f, 1.f));
     translateYSpinButton->GetSignal(sfg::SpinButton::OnValueChanged).Connect([this, &translateYSpinButton, speed](){
@@ -79,7 +86,7 @@ void Application::run()
 
         transform = glm::translate(transform, glm::vec3(sign * speed, 0, 0));
     });
-    layout->Attach(translateYSpinButton, {1,2,1,1});
+    planeTranslateLayout->Pack(translateYSpinButton);
 
     sfg::SpinButton::Ptr translateZSpinButton(sfg::SpinButton::Create(-300.f, 300.f, 1.f));
     translateZSpinButton->GetSignal(sfg::SpinButton::OnValueChanged).Connect([this, &translateZSpinButton, speed](){
@@ -89,7 +96,11 @@ void Application::run()
 
         transform = glm::translate(transform, glm::vec3(0, 0, sign * speed));
     });
-    layout->Attach(translateZSpinButton, {1,3,1,1});
+    planeTranslateLayout->Pack(translateZSpinButton);
+
+    auto planeTranslateFrame = sfg::Frame::Create("Translate");
+    planeTranslateFrame->Add(planeTranslateLayout);
+    planeLayout->Pack(planeTranslateFrame);
 
     sfg::SpinButton::Ptr rotateXSpinButton(sfg::SpinButton::Create(-300.f, 300.f, 1.f));
     rotateXSpinButton->GetSignal(sfg::SpinButton::OnValueChanged).Connect([this, &rotateXSpinButton, speed](){
@@ -99,7 +110,7 @@ void Application::run()
 
         transform = glm::rotate(transform, static_cast<float>(sign), glm::vec3(1.f,0,0));
     });
-    layout->Attach(rotateXSpinButton, {1,4,1,1});
+    planeRotateLayout->Pack(rotateXSpinButton);
 
     sfg::SpinButton::Ptr rotateYSpinButton(sfg::SpinButton::Create(-300.f, 300.f, 1.f));
     rotateYSpinButton->GetSignal(sfg::SpinButton::OnValueChanged).Connect([this, &rotateYSpinButton, speed](){
@@ -109,7 +120,7 @@ void Application::run()
 
         transform = glm::rotate(transform, static_cast<float>(sign), glm::vec3(0, 1.f, 0));
     });
-    layout->Attach(rotateYSpinButton, {1,5,1,1});
+    planeRotateLayout->Pack(rotateYSpinButton);
 
     sfg::SpinButton::Ptr rotateZSpinButton(sfg::SpinButton::Create(-300.f, 300.f, 1.f));
     rotateZSpinButton->GetSignal(sfg::SpinButton::OnValueChanged).Connect([this, &rotateZSpinButton, speed](){
@@ -119,7 +130,15 @@ void Application::run()
 
         transform = glm::rotate(transform, static_cast<float>(sign), glm::vec3(0, 0, 1.f));
     });
-    layout->Attach(rotateZSpinButton, {1,6,1,1});
+    planeRotateLayout->Pack(rotateZSpinButton);
+
+    auto planeRotateFrame = sfg::Frame::Create("Rotate");
+    planeRotateFrame->Add(planeRotateLayout);
+    planeLayout->Pack(planeRotateFrame);
+
+    auto planeFrame = sfg::Frame::Create("Plane");
+    planeFrame->Add(planeLayout);
+    layout->Attach(planeFrame, {1,0,1,1});
 
     sfg::Window::Ptr canvasWindow(sfg::Window::Create(sfg::Window::BACKGROUND));
     canvasWindow->SetRequisition(static_cast<sf::Vector2f>(window.getSize()));
