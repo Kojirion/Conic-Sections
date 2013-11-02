@@ -1,20 +1,22 @@
 #ifndef PLANE_HPP
 #define PLANE_HPP
-#include <SFML/System/Vector3.hpp>
+#include <glm/glm.hpp>
 
 class Plane
 {
 public:
     Plane();
 
-    bool contains(const sf::Vector3f point) const;
+    bool contains(const glm::vec3 point) const;
+
+    //void update(const sf::Transform& matrix);
 
     void draw() const;
 
 private:
-    sf::Vector3f A, B, C, D;
-    sf::Vector3f AB, AD;
-    sf::Vector3f cross;
+    glm::vec3 A, B, C, D;
+    glm::vec3 AB, AD;
+    glm::vec3 cross;
     float Dee;
 
 };

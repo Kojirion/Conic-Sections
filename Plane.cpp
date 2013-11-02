@@ -1,7 +1,5 @@
 #include "Plane.hpp"
-#include <Thor/Vectors/VectorAlgebra3D.hpp>
 #include <SFML/OpenGL.hpp>
-#include <limits>
 
 Plane::Plane():
     A(-240,  240, 0),
@@ -10,16 +8,21 @@ Plane::Plane():
     D(-240, -240, 0),
     AB(B-A),
     AD(D-A),
-    cross(thor::crossProduct(AB, AD)),
-    Dee(thor::dotProduct(cross, A))
+    cross(glm::cross(AB, AD)),
+    Dee(glm::dot(cross, A))
 {
 
 }
 
-bool Plane::contains(const sf::Vector3f point) const
+bool Plane::contains(const glm::vec3 point) const
 {
-    return std::abs(thor::dotProduct(point, cross) - Dee) < 10.f;
+    return std::abs(glm::dot(point, cross) - Dee) < 10.f;
 }
+
+//void Plane::update(const sf::Transform &matrix)
+//{
+
+//}
 
 void Plane::draw() const
 {

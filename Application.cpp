@@ -12,6 +12,11 @@ Application::Application():
     actions["Resized"    ] = thor::Action(sf::Event::Resized );
     actions["PanRight"   ] = thor::Action(sf::Keyboard::Right) && thor::Action(sf::Keyboard::LControl);
 
+    actions["TiltDown"   ] = thor::Action(sf::Keyboard::W);
+    actions["PullUp"     ] = thor::Action(sf::Keyboard::N);
+//    actions["TiltDown"   ] = thor::Action(sf::Keyboard::W);
+//    actions["TiltDown"   ] = thor::Action(sf::Keyboard::W);
+
     //window.resetGLStates();
     window.setFramerateLimit(60);
 
@@ -28,6 +33,11 @@ Application::Application():
     system.connect("PanLeft" , [this](ActionContext){ camera.lookAt.x -= 10.f; });
     system.connect("PanUp"   , [this](ActionContext){ camera.lookAt.y += 10.f; });
     system.connect("PanDown" , [this](ActionContext){ camera.lookAt.y -= 10.f; });
+
+    system.connect("TiltDown", [this](ActionContext){ camera.lookAt.x += 10.f; });
+    system.connect("PullUp"  , [this](ActionContext){ camera.lookAt.x -= 10.f; });
+//    system.connect("PanUp"   , [this](ActionContext){ camera.lookAt.y += 10.f; });
+//    system.connect("PanDown" , [this](ActionContext){ camera.lookAt.y -= 10.f; });
 
 }
 

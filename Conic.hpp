@@ -1,6 +1,6 @@
 #ifndef CONIC_HPP
 #define CONIC_HPP
-#include <SFML/System/Vector3.hpp>
+#include <glm/glm.hpp>
 #include "Cone.hpp"
 #include "Plane.hpp"
 
@@ -14,7 +14,7 @@ public:
     void draw() const;
 
 private:
-    std::vector<sf::Vector3f> points;
+    std::vector<glm::vec3> points;
 };
 
 #endif // CONIC_HPP

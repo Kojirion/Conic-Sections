@@ -1,14 +1,14 @@
 #ifndef CONE_HPP
 #define CONE_HPP
 #include <vector>
-#include <SFML/System/Vector3.hpp>
+#include <glm/glm.hpp>
 
 class Cone
 {
 public:
     Cone();
 
-    typedef std::vector<sf::Vector3f>::const_iterator iterator;
+    typedef std::vector<glm::vec3>::const_iterator iterator;
 
     iterator begin() const;
     iterator end() const;
@@ -16,11 +16,11 @@ public:
     void draw() const;
 
 private:
-    std::vector<sf::Vector3f> points;
+    std::vector<glm::vec3> points;
 
     int height;
     int radius;
-    sf::Vector3f origin;
+    glm::vec3 origin;
 
 };
 

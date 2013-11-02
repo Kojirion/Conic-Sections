@@ -14,6 +14,8 @@ Cone::Cone()
             float y = h - i;
             float z = ((h - i) / h) * r * std::sin(angle);
             points.emplace_back(x,y,z);
+            y = i - h;
+            points.emplace_back(x,y,z);
         }
     }
 
