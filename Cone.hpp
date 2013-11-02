@@ -13,6 +13,10 @@ public:
 private:
     std::vector<sf::Vector3f> points;
 
+    int height;
+    int radius;
+    sf::Vector3f origin;
+
 };
 
 #endif // CONE_HPP

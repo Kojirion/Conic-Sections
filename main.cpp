@@ -3,6 +3,7 @@
 #include <Thor/Input/ActionMap.hpp>
 #include <Thor/Input/EventSystem.hpp>
 #include "Cone.hpp"
+#include "Conic.hpp"
 
 int main()
 {
@@ -10,6 +11,7 @@ int main()
     const int height = 600;
 
     Cone cone;
+    Plane plane;
 
     thor::ActionMap<std::string> actions;
     thor::ActionMap<std::string>::CallbackSystem system;
@@ -31,13 +33,9 @@ int main()
     glViewport(0, 0, width, height);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    //gluOrtho2D(-300, 300, -300, 300);
     gluPerspective(120, width / float(height), .1, 500);
     glMatrixMode(GL_MODELVIEW);
     gluLookAt(0,0,200.,0,0,0,0,1,0);
-    //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-
-
 
     while (window.isOpen()){
         actions.update(window);
@@ -46,8 +44,7 @@ int main()
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         cone.draw();
-
-
+        plane.draw();
 
         window.display();
 
