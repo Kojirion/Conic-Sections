@@ -5,11 +5,11 @@ Conic::Conic()
 {
 }
 
-void Conic::update(const Cone &cone, const Plane &plane)
+void Conic::update(const Surface &surface, const Plane &plane)
 {
     points.clear();
 
-    for (const auto& point : cone){
+    for (const auto& point : surface){
         if (plane.contains(point))
             points.emplace_back(point);
     }

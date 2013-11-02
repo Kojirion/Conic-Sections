@@ -9,7 +9,7 @@ class Conic
 public:
     Conic();
 
-    void update(const Cone& cone, const Plane& plane);
+    void update(const Surface& surface, const Plane& plane);
 
     void draw() const;
 

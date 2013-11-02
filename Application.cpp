@@ -3,15 +3,15 @@
 
 Application::Application():
     window(sf::VideoMode(1366, 768), "Conic sections", sf::Style::Close, sf::ContextSettings(32)),
-    camera{{0,0,200.}, {0,0,0}, {0,1,0}}
+    camera{{0,0,350.}, {0,0,0}, {0,1,0}}
 {
     actions["Close"] = thor::Action(sf::Event::Closed);
-    //actions["StrafeRight"] = thor::Action(sf::Keyboard::Right);
+    actions["StrafeRight"] = thor::Action(sf::Keyboard::Right);
     actions["StrafeLeft" ] = thor::Action(sf::Keyboard::Left );
     actions["StrafeUp"   ] = thor::Action(sf::Keyboard::Up   );
     actions["StrafeDown" ] = thor::Action(sf::Keyboard::Down );
     actions["Resized"    ] = thor::Action(sf::Event::Resized );
-    actions["PanRight"   ] = thor::Action(sf::Keyboard::Right) && thor::Action(sf::Keyboard::LControl);
+    //actions["PanRight"   ] = thor::Action(sf::Keyboard::Right) && thor::Action(sf::Keyboard::LControl);
 
     actions["TiltDown"   ] = thor::Action(sf::Keyboard::W);
     actions["PullUp"     ] = thor::Action(sf::Keyboard::N);
@@ -184,7 +184,7 @@ void Application::run()
         desktop.Update(1.f);
 
         plane.update(transform);
-        conic.update(cone, plane);
+        conic.update(paraboloid, plane);
 
         canvas->Bind();
 
@@ -202,7 +202,7 @@ void Application::run()
 
         //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        cone.draw();
+        paraboloid.draw();
         plane.draw();
         conic.draw();
 

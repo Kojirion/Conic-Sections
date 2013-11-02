@@ -6,7 +6,9 @@
 #include <Thor/Input/EventSystem.hpp>
 #include <SFGUI/SFGUI.hpp>
 #include "Cone.hpp"
+#include "Cylinder.hpp"
 #include "Conic.hpp"
+#include "Paraboloid.hpp"
 
 struct Camera{
     sf::Vector3f eye;
@@ -31,7 +33,10 @@ private:
     Camera camera;
 
     Cone cone;
+    Cylinder cylinder;
+    Paraboloid paraboloid;
     Plane plane;
+
     Conic conic;
 
     void trigger(const std::string& which);
