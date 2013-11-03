@@ -110,6 +110,7 @@ void Application::run()
         desktop.Update(1.f);
 
         plane.update(planeControls.getTransform());
+        planeControls.update();
         conic.update(*surface, plane);
 
         canvas->Bind();
