@@ -24,10 +24,10 @@ private:
         Z
     };
 
-    void translate (Axis axis);
-    void rotate    (Axis axis);
+    void translate (Axis axis, const sfg::SpinButton *widget);
+    void rotate    (Axis axis, const sfg::SpinButton *widget);
 
-    int signOf(const sfg::SpinButton::Ptr& widget) const;
+    int signOf(const sfg::SpinButton *widget) const;
 };
 
 #endif // PLANECONTROLS_HPP
