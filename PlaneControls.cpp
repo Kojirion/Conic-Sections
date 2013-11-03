@@ -15,39 +15,17 @@ PlaneControls::PlaneControls():
 //                std::bind(&Application::trigger, this, "Reset"));
     planeLayout->Pack(resetButton);
 
-    sfg::SpinButton::Ptr translateXSpinButton(sfg::SpinButton::Create(-300.f, 300.f, 1.f));
-    translateXSpinButton->GetSignal(sfg::SpinButton::OnValueChanged).Connect(
-                std::bind(&PlaneControls::translate, this, Axis::X, translateXSpinButton.get()));
-    planeTranslateLayout->Pack(translateXSpinButton);
-
-    sfg::SpinButton::Ptr translateYSpinButton(sfg::SpinButton::Create(-300.f, 300.f, 1.f));
-    translateYSpinButton->GetSignal(sfg::SpinButton::OnValueChanged).Connect(
-                std::bind(&PlaneControls::translate, this, Axis::Y, translateYSpinButton.get()));
-    planeTranslateLayout->Pack(translateYSpinButton);
-
-    sfg::SpinButton::Ptr translateZSpinButton(sfg::SpinButton::Create(-300.f, 300.f, 1.f));
-    translateZSpinButton->GetSignal(sfg::SpinButton::OnValueChanged).Connect(
-                std::bind(&PlaneControls::translate, this, Axis::Z, translateZSpinButton.get()));
-    planeTranslateLayout->Pack(translateZSpinButton);
+    translateButton(Axis::X, planeTranslateLayout);
+    translateButton(Axis::Y, planeTranslateLayout);
+    translateButton(Axis::Z, planeTranslateLayout);
 
     auto planeTranslateFrame = sfg::Frame::Create("Translate");
     planeTranslateFrame->Add(planeTranslateLayout);
     planeLayout->Pack(planeTranslateFrame);
 
-    sfg::SpinButton::Ptr rotateXSpinButton(sfg::SpinButton::Create(-300.f, 300.f, 1.f));
-    rotateXSpinButton->GetSignal(sfg::SpinButton::OnValueChanged).Connect(
-                std::bind(&PlaneControls::rotate, this, Axis::X, rotateXSpinButton.get()));
-    planeRotateLayout->Pack(rotateXSpinButton);
-
-    sfg::SpinButton::Ptr rotateYSpinButton(sfg::SpinButton::Create(-300.f, 300.f, 1.f));
-    rotateYSpinButton->GetSignal(sfg::SpinButton::OnValueChanged).Connect(
-                std::bind(&PlaneControls::rotate, this, Axis::Y, rotateYSpinButton.get()));
-    planeRotateLayout->Pack(rotateYSpinButton);
-
-    sfg::SpinButton::Ptr rotateZSpinButton(sfg::SpinButton::Create(-300.f, 300.f, 1.f));
-    rotateZSpinButton->GetSignal(sfg::SpinButton::OnValueChanged).Connect(
-                std::bind(&PlaneControls::rotate, this, Axis::Z, rotateZSpinButton.get()));
-    planeRotateLayout->Pack(rotateZSpinButton);
+    rotateButton(Axis::X, planeRotateLayout);
+    rotateButton(Axis::Y, planeRotateLayout);
+    rotateButton(Axis::Z, planeRotateLayout);
 
     auto planeRotateFrame = sfg::Frame::Create("Rotate");
     planeRotateFrame->Add(planeRotateLayout);
@@ -119,4 +97,20 @@ int PlaneControls::signOf(const sfg::SpinButton* widget) const
 {
     if (widget->IsIncreaseStepperPressed()) return 1;
     return -1;
+}
+
+void PlaneControls::translateButton(PlaneControls::Axis axis, const sfg::Box::Ptr &layout)
+{
+    sfg::SpinButton::Ptr button(sfg::SpinButton::Create(-300.f, 300.f, 1.f));
+    button->GetSignal(sfg::SpinButton::OnValueChanged).Connect(
+                std::bind(&PlaneControls::translate, this, axis, button.get()));
+    layout->Pack(button);
+}
+
+void PlaneControls::rotateButton(PlaneControls::Axis axis, const sfg::Box::Ptr &layout)
+{
+    sfg::SpinButton::Ptr button(sfg::SpinButton::Create(-300.f, 300.f, 1.f));
+    button->GetSignal(sfg::SpinButton::OnValueChanged).Connect(
+                std::bind(&PlaneControls::rotate, this, axis, button.get()));
+    layout->Pack(button);
 }

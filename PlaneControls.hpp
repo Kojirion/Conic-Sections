@@ -28,6 +28,9 @@ private:
     void rotate    (Axis axis, const sfg::SpinButton *widget);
 
     int signOf(const sfg::SpinButton *widget) const;
+
+    void translateButton(Axis axis, const sfg::Box::Ptr& layout);
+    void rotateButton(Axis axis, const sfg::Box::Ptr& layout);
 };
 
 #endif // PLANECONTROLS_HPP
