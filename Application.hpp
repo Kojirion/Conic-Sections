@@ -8,18 +8,13 @@
 #include "Conic.hpp"
 #include "PlaneControls.hpp"
 #include <memory>
+#include "Camera.hpp"
 
 class Surface;
 
 typedef thor::ActionMap<std::string> ActionMap;
 typedef ActionMap::CallbackSystem CallbackSystem;
 typedef thor::ActionContext<std::string> ActionContext;
-
-struct Camera{
-    sf::Vector3f eye;
-    sf::Vector3f lookAt;
-    sf::Vector3f up;
-};
 
 class Application
 {

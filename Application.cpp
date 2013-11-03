@@ -5,8 +5,7 @@
 #include "Paraboloid.hpp"
 
 Application::Application():
-    window(sf::VideoMode(1366, 768), "Snowstorm", sf::Style::Close, sf::ContextSettings(32)),
-    camera{{0,0,350.}, {0,0,0}, {0,1,0}}
+    window(sf::VideoMode(1366, 768), "Snowstorm", sf::Style::Close, sf::ContextSettings(32))
 {
     surfaces.emplace_back(new Cone);
     surfaces.emplace_back(new Cylinder);
@@ -14,12 +13,14 @@ Application::Application():
 
     surface = surfaces[0].get();
 
-    actions["Close"] = thor::Action(sf::Event::Closed);
-    actions["StrafeRight"] = thor::Action(sf::Keyboard::Right);
-    actions["StrafeLeft" ] = thor::Action(sf::Keyboard::Left );
-    actions["StrafeUp"   ] = thor::Action(sf::Keyboard::Up   );
-    actions["StrafeDown" ] = thor::Action(sf::Keyboard::Down );
-    actions["Resized"    ] = thor::Action(sf::Event::Resized );
+    actions["Close"]   = thor::Action(sf::Event::Closed      );
+    actions["Right"]   = thor::Action(sf::Keyboard::Right    );
+    actions["Left" ]   = thor::Action(sf::Keyboard::Left     );
+    actions["Up"   ]   = thor::Action(sf::Keyboard::Up       );
+    actions["Down" ]   = thor::Action(sf::Keyboard::Down     );
+    actions["ZoomIn"]  = thor::Action(sf::Keyboard::Add      );
+    actions["ZoomOut"] = thor::Action(sf::Keyboard::Subtract );
+    actions["Resized"] = thor::Action(sf::Event::Resized     );
     //actions["PanRight"   ] = thor::Action(sf::Keyboard::Right) && thor::Action(sf::Keyboard::LControl);
 
     actions["TiltDown"   ] = thor::Action(sf::Keyboard::W);
@@ -30,20 +31,15 @@ Application::Application():
     //window.resetGLStates();
     window.setFramerateLimit(60);
 
-    system.connect("Close", std::bind(&sf::Window::close, &window));    
+    system.connect("Close", std::bind(&sf::Window::close, &window));
 
-    system.connect("StrafeRight", [this](ActionContext){ camera.eye.x += 10.f; });
-    system.connect("StrafeLeft" , [this](ActionContext){ camera.eye.x -= 10.f; });
-    system.connect("StrafeUp"   , [this](ActionContext){ camera.eye.y += 10.f; });
-    system.connect("StrafeDown" , [this](ActionContext){ camera.eye.y -= 10.f; });
+    system.connect("Right"   , [this](ActionContext){ camera.longitude -= M_PI/180; });
+    system.connect("Left"    , [this](ActionContext){ camera.longitude += M_PI/180; });
+    system.connect("Up"      , [this](ActionContext){ camera.latitude  -= M_PI/180; });
+    system.connect("Down"    , [this](ActionContext){ camera.latitude  += M_PI/180; });
+    system.connect("ZoomIn"  , [this](ActionContext){ camera.eyeDistance  -= 10.f ; });
+    system.connect("ZoomOut" , [this](ActionContext){ camera.eyeDistance  += 10.f ; });
 
-    system.connect("PanRight", [this](ActionContext){ camera.lookAt.x += 10.f; });
-    system.connect("PanLeft" , [this](ActionContext){ camera.lookAt.x -= 10.f; });
-    system.connect("PanUp"   , [this](ActionContext){ camera.lookAt.y += 10.f; });
-    system.connect("PanDown" , [this](ActionContext){ camera.lookAt.y -= 10.f; });
-
-    system.connect("TiltDown", [this](ActionContext){ transform = glm::rotate(transform, -1.f, glm::vec3(1.f,0,0)); });
-    system.connect("PullUp"  , [this](ActionContext){ transform = glm::translate(transform, glm::vec3(0, 1.f, 0)); });
 
     system.connect("Reset"   , [this](ActionContext){ plane = Plane(); });
 //    system.connect("PanUp"   , [this](ActionContext){ camera.lookAt.y += 10.f; });
@@ -115,11 +111,7 @@ void Application::run()
 
         canvas->Bind();
 
-        glMatrixMode(GL_MODELVIEW);
-        glLoadIdentity();
-        gluLookAt(camera.eye.x, camera.eye.y, camera.eye.z,
-                  camera.lookAt.x, camera.lookAt.y, camera.lookAt.z,
-                  camera.up.x, camera.up.y, camera.up.z);
+        camera.update();
 
         canvas->Clear();
 
