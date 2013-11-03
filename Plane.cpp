@@ -3,6 +3,12 @@
 #include <boost/spirit/include/karma.hpp>
 #include <list>
 
+template <typename Num>
+struct float_policy : boost::spirit::karma::real_policies<Num>
+{
+    bool force_sign(Num n) const { return true; }
+};
+
 Plane::Plane():
     A(-240,  240, 0),
     B( 240,  240, 0),
@@ -37,16 +43,17 @@ void Plane::update(const glm::mat4& matrix)
     namespace karma = boost::spirit::karma;
     namespace ascii = boost::spirit::ascii;
     using karma::float_;
-    using karma::generate_delimited;
+    using karma::generate;
     using ascii::space;
 
     std::list<float> list = {cross.x, cross.y, cross.z, Dee};
 
+    typedef karma::real_generator<float, float_policy<float> > SignedFloat;
+    SignedFloat signedFloat;
+
     equation.clear();
     std::back_insert_iterator<std::string> sink(equation);
-    generate_delimited(sink,
-                       float_ << *(',' << float_),
-                       space, list);
+    generate(sink, float_ << "x" << signedFloat << "y" <<  signedFloat << "z" << " = " << float_, list);
 
     //equation = generated;
 
