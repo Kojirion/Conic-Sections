@@ -27,6 +27,7 @@ private:
     sfg::SFGUI sfgui_;
     sf::Window window;
     sfg::Desktop desktop;
+    sfg::Label::Ptr planeEquation;
     //sf::Image icon;
     ActionMap actions;
     CallbackSystem system;

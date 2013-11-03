@@ -5,7 +5,8 @@
 #include "Paraboloid.hpp"
 
 Application::Application():
-    window(sf::VideoMode(1366, 768), "Snowstorm", sf::Style::Close, sf::ContextSettings(32))
+    window(sf::VideoMode(1366, 768), "Snowstorm", sf::Style::Close, sf::ContextSettings(32)),
+    planeEquation(sfg::Label::Create())
 {
     surfaces.emplace_back(new Cone);
     surfaces.emplace_back(new Cylinder);
@@ -62,6 +63,8 @@ void Application::run()
 
     layout->Attach(planeControls.getWidget(), {1,0,1,1});
 
+    layout->Attach(planeEquation, {1,1,1,1});
+
     sfg::Window::Ptr canvasWindow(sfg::Window::Create(sfg::Window::BACKGROUND));
     canvasWindow->SetRequisition(static_cast<sf::Vector2f>(window.getSize()));
     canvasWindow->Add(layout);
@@ -107,6 +110,7 @@ void Application::run()
 
         plane.update(planeControls.getTransform());
         planeControls.update();
+        planeEquation->SetText(plane.getEquation());
         conic.update(*surface, plane);
 
         canvas->Bind();
