@@ -22,7 +22,7 @@ Plane::Plane():
 
 }
 
-bool Plane::contains(const glm::vec3 point) const
+bool Plane::contains(const glm::vec3 &point) const
 {
     return std::abs(glm::dot(point, cross) - Dee) < 100000.f;
 }
@@ -68,6 +68,7 @@ void Plane::update(const glm::mat4& matrix)
 void Plane::draw() const
 {
     glBegin(GL_LINE_LOOP);
+    //glBegin(GL_QUADS);
 
     glColor3f(255,0,0);
 

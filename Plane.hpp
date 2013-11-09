@@ -8,7 +8,7 @@ class Plane
 public:
     Plane();
 
-    bool contains(const glm::vec3 point) const;
+    bool contains(const glm::vec3& point) const;
 
     void update(const glm::mat4 &matrix);
 

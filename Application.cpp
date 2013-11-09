@@ -5,14 +5,14 @@
 #include "Paraboloid.hpp"
 
 Application::Application():
-    window(sf::VideoMode(1366, 768), "Snowstorm", sf::Style::Close, sf::ContextSettings(32)),
+    window(sf::VideoMode(800, 600), "Snowstorm", sf::Style::Close, sf::ContextSettings(32)),
     planeEquation(sfg::Label::Create())
 {
     surfaces.emplace_back(new Cone);
     surfaces.emplace_back(new Cylinder);
     surfaces.emplace_back(new Paraboloid);
 
-    surface = surfaces[0].get();
+    surface = surfaces[2].get();
 
     actions["Close"]   = thor::Action(sf::Event::Closed      );
     actions["Right"]   = thor::Action(sf::Keyboard::Right    );
@@ -50,8 +50,8 @@ Application::Application():
 
 void Application::run()
 {
-    const float width = 600.f;
-    const float height = 600.f;
+    const float width = 400.f;
+    const float height = 400.f;
 
     sfg::Table::Ptr layout(sfg::Table::Create());
     layout->SetColumnSpacings(5.f);
