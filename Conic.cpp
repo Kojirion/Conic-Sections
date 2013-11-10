@@ -1,5 +1,7 @@
 #include "Conic.hpp"
 #include <SFML/OpenGL.hpp>
+#include <algorithm>
+#include <functional>
 
 Conic::Conic()
 {
@@ -9,11 +11,8 @@ void Conic::update(const Surface &surface, const Plane &plane)
 {
     points.clear();
 
-    for (const auto& point : surface){
-        if (plane.contains(point))
-            points.emplace_back(point);
-    }
-
+    std::copy_if(surface.begin(), surface.end(), std::back_inserter(points),
+                 std::bind(&Plane::contains, &plane, std::placeholders::_1));
 
 }
 
