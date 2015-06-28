@@ -2,13 +2,20 @@
 #define APPLICATION_HPP
 #include <SFML/Window.hpp>
 #include <SFML/OpenGL.hpp>
+
 #include <Thor/Input/ActionMap.hpp>
 #include <Thor/Input/EventSystem.hpp>
+
 #include <SFGUI/SFGUI.hpp>
+#include <SFGUI/Desktop.hpp>
+#include <SFGUI/Label.hpp>
+
+
 #include "Conic.hpp"
 #include "PlaneControls.hpp"
-#include <memory>
 #include "Camera.hpp"
+
+#include <memory>
 
 class Surface;
 

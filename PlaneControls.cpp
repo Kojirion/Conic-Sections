@@ -1,6 +1,7 @@
 #include "PlaneControls.hpp"
 #include <memory>
 #include <cassert>
+#include <SFGUI/Button.hpp>
 
 PlaneControls::PlaneControls():
     planeFrame(sfg::Frame::Create("Plane"))
@@ -77,16 +78,17 @@ void PlaneControls::rotate(PlaneControls::Axis axis, const sfg::SpinButton *widg
     assert(widget);
 
     int sign = signOf(widget);
+    float angle = sign*M_PI/180.f;
 
     switch (axis) {
     case Axis::X:
-        transform = glm::rotate(transform, static_cast<float>(sign), glm::vec3(1.f, 0, 0));
+        transform = glm::rotate(transform, angle, glm::vec3(1.f, 0, 0));
         break;
     case Axis::Y:
-        transform = glm::rotate(transform, static_cast<float>(sign), glm::vec3(0, 1.f, 0));
+        transform = glm::rotate(transform, angle, glm::vec3(0, 1.f, 0));
         break;
     case Axis::Z:
-        transform = glm::rotate(transform, static_cast<float>(sign), glm::vec3(0, 0, 1.f));
+        transform = glm::rotate(transform, angle, glm::vec3(0, 0, 1.f));
         break;
     default:
         break;

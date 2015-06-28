@@ -1,6 +1,7 @@
 #include "Camera.hpp"
 #include <cmath>
 #include <SFML/OpenGL.hpp>
+#include <GL/glu.h>
 
 Camera::Camera():
     longitude(M_PI), latitude(M_PI), eyeDistance(500.f),

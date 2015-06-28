@@ -1,6 +1,10 @@
 #ifndef PLANECONTROLS_HPP
 #define PLANECONTROLS_HPP
-#include <SFGUI/SFGUI.hpp>
+#include <SFGUI/Widget.hpp>
+#include <SFGUI/Frame.hpp>
+#include <SFGUI/SpinButton.hpp>
+#include <SFGUI/Box.hpp>
+#define GLM_FORCE_RADIANS
 #include <glm/gtc/matrix_transform.hpp>
 
 class PlaneControls

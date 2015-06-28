@@ -3,6 +3,10 @@
 #include "Cone.hpp"
 #include "Cylinder.hpp"
 #include "Paraboloid.hpp"
+#include <SFGUI/Table.hpp>
+#include <SFGUI/Canvas.hpp>
+#include <SFGUI/Window.hpp>
+#include <GL/glu.h>
 
 Application::Application():
     window(sf::VideoMode(800, 600), "Snowstorm", sf::Style::Close, sf::ContextSettings(32)),
