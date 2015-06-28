@@ -1,5 +1,4 @@
-#ifndef CONIC_HPP
-#define CONIC_HPP
+#pragma once
 #include <glm/glm.hpp>
 #include "Cone.hpp"
 #include "Plane.hpp"
@@ -16,5 +15,3 @@ public:
 private:
     std::vector<glm::vec3> points;
 };
-
-#endif // CONIC_HPP

@@ -1,5 +1,4 @@
-#ifndef PARABOLOID_HPP
-#define PARABOLOID_HPP
+#pragma once
 #include "Surface.hpp"
 
 class Paraboloid : public Surface
@@ -7,5 +6,3 @@ class Paraboloid : public Surface
 public:
     Paraboloid();
 };
-
-#endif // PARABOLOID_HPP

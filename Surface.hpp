@@ -1,5 +1,4 @@
-#ifndef SURFACE_HPP
-#define SURFACE_HPP
+#pragma once
 #include <vector>
 #include <glm/glm.hpp>
 #include <string>
@@ -22,5 +21,3 @@ protected:
     std::vector<glm::vec3> points;
 
 };
-
-#endif // SURFACE_HPP

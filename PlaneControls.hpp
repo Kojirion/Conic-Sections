@@ -1,5 +1,4 @@
-#ifndef PLANECONTROLS_HPP
-#define PLANECONTROLS_HPP
+#pragma once
 #include <SFGUI/Widget.hpp>
 #include <SFGUI/Frame.hpp>
 #include <SFGUI/SpinButton.hpp>
@@ -36,5 +35,3 @@ private:
     void translateButton(Axis axis, const sfg::Box::Ptr& layout);
     void rotateButton(Axis axis, const sfg::Box::Ptr& layout);
 };
-
-#endif // PLANECONTROLS_HPP

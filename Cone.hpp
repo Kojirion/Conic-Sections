@@ -1,5 +1,4 @@
-#ifndef CONE_HPP
-#define CONE_HPP
+#pragma once
 #include "Surface.hpp"
 
 class Cone : public Surface
@@ -7,5 +6,3 @@ class Cone : public Surface
 public:
     Cone();    
 };
-
-#endif // CONE_HPP

@@ -1,5 +1,4 @@
-#ifndef CAMERA_HPP
-#define CAMERA_HPP
+#pragma once
 #include <SFML/System/Vector3.hpp>
 
 struct Camera{
@@ -24,5 +23,3 @@ private:
 
 
 };
-
-#endif // CAMERA_HPP

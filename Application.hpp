@@ -1,5 +1,4 @@
-#ifndef APPLICATION_HPP
-#define APPLICATION_HPP
+#pragma once
 #include <SFML/Window.hpp>
 #include <SFML/OpenGL.hpp>
 
@@ -53,5 +52,3 @@ private:
     glm::mat4 transform;
 
 };
-
-#endif // APPLICATION_HPP

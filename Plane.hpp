@@ -1,5 +1,4 @@
-#ifndef PLANE_HPP
-#define PLANE_HPP
+#pragma once
 #include <glm/glm.hpp>
 #include <string>
 
@@ -25,5 +24,3 @@ private:
     std::string equation;
 
 };
-
-#endif // PLANE_HPP
